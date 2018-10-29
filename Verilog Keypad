@@ -1,0 +1,163 @@
+module keypad
+(
+  row_a,
+  row_b,
+  row_c,
+  row_d,
+  col_x,
+  col_y,
+  col_z,
+  Key_Not_Valid,
+  key_value
+);
+
+//I/O ports
+//the rows and columns go high when pressed
+input wire row_a, row_b, row_c, row_d, col_x, col_y, col_z;
+
+//KValid will denote multiple keys pressed together
+output reg Key_Not_Valid;
+output reg [3:0] key_value;
+
+always @*
+begin
+if (row_a &amp; col_x)
+key_value = 4&#39;b0111; //7
+if (row_a &amp; col_y)
+key_value = 4&#39;b1000; //8
+if (row_a &amp; col_z)
+key_value = 4&#39;b1001; //9
+if (row_b &amp; col_x)
+key_value = 4&#39;b0100; //4
+if (row_b &amp; col_y)
+key_value = 4&#39;b0101; //5
+if (row_b &amp; col_z)
+key_value = 4&#39;b0110; //6
+if (row_c &amp; col_x)
+key_value = 4&#39;b0001; //1
+if (row_c &amp; col_y)
+key_value = 4&#39;b0010; //2
+if (row_c &amp; col_z)
+key_value = 4&#39;b0011; //3
+if (row_d &amp; col_x)
+key_value = 4&#39;b0000; //0
+if (row_d &amp; col_y)
+key_value = 4&#39;b1010; // 10 for #
+if (row_d &amp; col_z)
+key_value = 4&#39;b1111; //15 for *
+
+end //end of always block
+
+//determine Key_Not_Valid
+always @*
+begin
+//adding up all the rows should = 1, adding up all the columns should = 1
+//if not then the key press is not valid
+//high when key press invalid
+Key_Not_Valid = ~(((row_a + row_b + row_c + row_d) == 3&#39;b001) &amp;&amp; ((col_x + col_y + col_z)
+== 3&#39;b001));
+end // end of second always block
+endmodule
+
+-------------------------------------------------------------------------------------------
+Code from TestBench
+`timescale 1ns / 10ps
+module keypad_tf;
+// Inputs
+reg [0:0]a;
+reg [0:0]b;
+reg [0:0]c;
+reg [0:0]d;
+reg [0:0]x;
+reg [0:0]y;
+reg [0:0]z;
+// Outputs
+wire KValid;
+wire [3:0] k_value;
+
+// Instantiate the Unit Under Test (UUT)
+keypad uut
+(
+.row_a(a),
+.row_b(b),
+.row_c(c),
+.row_d(d),
+.col_x(x),
+.col_y(y),
+.col_z(z),
+.Key_Not_Valid(KValid),
+.key_value(k_value)
+);
+
+initial begin
+//I just put in a test value from each row and column
+//and two tests which were invalid
+
+//test vector 1 (7)
+a = 1&#39;b1;
+b = 1&#39;b0;
+c = 1&#39;b0;
+d = 1&#39;b0;
+x = 1&#39;b1;
+y = 1&#39;b0;
+z = 1&#39;b0;
+#200;
+
+//test vector 5 (3)
+a = 1&#39;b0;
+b = 1&#39;b0;
+c = 1&#39;b1;
+d = 1&#39;b0;
+x = 1&#39;b0;
+y = 1&#39;b0;
+z = 1&#39;b1;
+#200;
+
+//test vector 6 (Invalid)
+//no keys pressed
+a = 1&#39;b0;
+b = 1&#39;b0;
+c = 1&#39;b0;
+d = 1&#39;b0;
+x = 1&#39;b0;
+y = 1&#39;b0;
+z = 1&#39;b0;
+#200;
+
+//test vector 3 (0)
+a = 1&#39;b0;
+b = 1&#39;b0;
+c = 1&#39;b0;
+d = 1&#39;b1;
+x = 1&#39;b1;
+y = 1&#39;b0;
+z = 1&#39;b0;
+#200;
+
+//test vector 4 (Invalid)
+//multiple keys pressed
+a = 1&#39;b0;
+b = 1&#39;b1;
+c = 1&#39;b1;
+d = 1&#39;b0;
+x = 1&#39;b0;
+y = 1&#39;b0;
+z = 1&#39;b1;
+#200;
+
+//test vector 2 (5)
+a = 1&#39;b0;
+b = 1&#39;b1;
+c = 1&#39;b0;
+d = 1&#39;b0;
+x = 1&#39;b0;
+y = 1&#39;b1;
+z = 1&#39;b0;
+#200;
+
+// Wait 100 ns for global reset to finish
+#100;
+end
+initial
+$monitor($stime,, a,, b,, c,, d,, x,, y,, z,,, );
+endmodule
