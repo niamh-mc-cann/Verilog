@@ -1,0 +1,60 @@
+module BarrelShifter
+(
+  input wire [7:0] a, //original
+  input wire [2:0] amount, //amount to rotate by
+  output reg [7:0] shifted //output
+);
+
+//body
+always @*
+case (amount)
+3'o0: shifted = a;
+3'o1: shifted = {a[0], a[7:1]}; //put into [0:0] what was in [7:1]
+3'o2: shifted = {a[1:0], a[7:2]};
+3'o3: shifted = {a[2:0], a[7:3]};
+3'o4: shifted = {a[3:0], a[7:4]};
+3'o5: shifted = {a[4:0], a[7:5]};
+3'o6: shifted = {a[5:0], a[7:6]};
+default: shifted = {a[6:0], a[7]};
+//ie 76543210 becomes 07654321
+endcase
+end //end of always block
+endmodule
+
+----------------------------------------------------------------------------------------------------------
+Code from testbench:
+module BarrelShifter_tb;
+// Inputs
+reg [7:0] a;
+reg [2:0] amt;
+
+// Outputs
+wire [7:0] shift;
+
+// Instantiate the Unit Under Test (UUT)
+BarrelShifter uut (
+  .a(a),
+  .amount(amt),
+  .shifted(shift)
+);
+
+initial begin
+//test1
+a = 8'b00110101; //random number
+amt = 3'b011; //rorate by 3 bits
+#200;
+
+//test2
+a = 8'b00110101; //random number
+amt = 3'b010; //rorate by 2 bits
+#200;
+
+//test3
+a = 8'b00110101; //random number
+amt = 3'b001; //rorate by 1 bit1
+#200;
+end
+initial
+$monitor($time,, a,, shift,,,);
+
+endmodule
