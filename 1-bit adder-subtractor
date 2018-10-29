@@ -1,0 +1,16 @@
+module full_adder_subtractor
+(
+  a, b, cin, x, cout
+);
+
+//a and b are bits to add
+//cin is the carry in
+
+input wire a, b, cin;
+//x is the sum or difference of a and b
+//cout is the carry out
+
+output wire x, cout;
+assign x = cin^a^b;
+assign cout = (b &amp; cin) | (a &amp; cin) | (a &amp; b);
+endmodule
