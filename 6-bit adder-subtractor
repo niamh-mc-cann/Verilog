@@ -1,0 +1,40 @@
+//modified from previous assignment by adding in the subtraction function
+module sixbit_adder
+(
+  input wire[5:0] a, b,
+  input wire [3:0] select,
+  output wire [5:0] x
+);
+
+//internal wires
+reg sub;
+wire c_out;
+
+//allow the module to choose the function
+always@*
+begin
+if (select == 4&#39;b1011)
+  sub = 1'b1; //sub being high means that it will subtract
+if (select == 4&#39;b1100)
+  sub = 1'b0;
+end
+
+// body
+//6 1bit adder/subtractors
+full_adder_subtractor bit0 (.a(a[0]), .b(b[0]^sub), .cin(c_in0), .cout(c_out0), .x(x[0]));
+full_adder_subtractor bit1 (.a(a[1]), .b(b[1]^sub), .cin(c_in1), .cout(c_out1), .x(x[1]));
+full_adder_subtractor bit2 (.a(a[2]), .b(b[2]^sub), .cin(c_in2), .cout(c_out2), .x(x[2]));
+full_adder_subtractor bit3 (.a(a[3]), .b(b[3]^sub), .cin(c_in3), .cout(c_out3), .x(x[3]));
+
+full_adder_subtractor bit4 (.a(a[4]), .b(b[4]^sub), .cin(c_in4), .cout(c_out4), .x(x[4]));
+full_adder_subtractor bit5 (.a(a[5]), .b(b[5]^sub), .cin(c_in5), .cout(c_out5), .x(x[5]));
+
+//assigning the cout of one module as the cin of the next module
+assign c_in0 = sub;
+assign c_in1 = c_out0;
+assign c_in2 = c_out1;
+assign c_in3 = c_out2;
+assign c_in4 = c_out3;
+assign c_in5 = c_out4;
+assign c_out = c_out5;
+endmodule
