@@ -1,0 +1,19 @@
+module negator( a, b, x, select );
+
+input wire [5:0] a , b;
+input wire [3:0] select;
+output wire [5:0] x;
+
+//internal wire
+reg [5:0] in; //place holder
+//allow the module to choose between inputs
+always@*
+begin
+if (select == 4&#39;b1001)
+  in = a;
+else if (select == 4&#39;b1010)
+  in = b;
+
+end
+assign x = ~in;
+endmodule
