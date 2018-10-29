@@ -1,0 +1,9 @@
+module twobit
+(
+  input wire a0, a1, b0, b1,
+  output wire eq
+);
+
+//2 bit greater than from previous assignment
+assign eq = ((a1 &amp; ~b1) | ( a0 &amp; ~b0 &amp; ~b1) | ( a0 &amp; a1 &amp; ~b0));
+endmodule
