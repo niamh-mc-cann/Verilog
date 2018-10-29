@@ -1,0 +1,153 @@
+module FullAdder(a, b, cin, s, cout);
+// a and b are the bits to add
+// cin is carry in
+
+input wire a, b, cin;
+// s is the sum of a and b. cout is any carry out bit
+// wires since just using assign here
+
+output wire s, cout;
+// logic for sum and carry
+assign s = cin ^ a ^ b;
+assign cout = (b & cin) | (a & cin) | (a & b);
+endmodule
+
+--------------------------------------------------------------------
+module sixbit_adder(
+  input wire[5:0] x, y,
+  input wire c_in,
+  output wire c_out, overflow,
+  output wire [5:0] sum
+ );
+ 
+// body
+FullAdder bit0 (.a(x[0]), .b(y[0]), .cin(c_in0), .cout(c_out0), .s(sum0));
+FullAdder bit1 (.a(x[1]), .b(y[1]), .cin(c_in1), .cout(c_out1), .s(sum1));
+FullAdder bit2 (.a(x[2]), .b(y[2]), .cin(c_in2), .cout(c_out2), .s(sum2));
+FullAdder bit3 (.a(x[3]), .b(y[3]), .cin(c_in3), .cout(c_out3), .s(sum3));
+FullAdder bit4 (.a(x[4]), .b(y[4]), .cin(c_in4), .cout(c_out4), .s(sum4));
+FullAdder bit5 (.a(x[5]), .b(y[5]), .cin(c_in5), .cout(c_out5), .s(sum5));
+assign c_in0 = c_in;
+assign c_in1 = c_out0;
+assign c_in2 = c_out1;
+assign c_in3 = c_out2;
+assign c_in4 = c_out3;
+assign c_in5 = c_out4;
+assign c_out = c_out5;
+assign sum = {sum5, sum4, sum3, sum2, sum1, sum0};
+assign overflow = c_out4 ^ c_out5;
+
+initial
+$monitor($stime,, c_in0,, c_in1,, c_in2,, c_in3,, c_in4,,c_in5,, );
+endmodule
+
+----------------------------------------------------------------------------------------------------------------
+module testbench_adder;
+// Inputs
+reg [5:0] test_x;
+reg [5:0] test_y;
+reg test_c_in;
+
+// Outputs
+wire c_out;
+wire overflow;
+wire [5:0] sum;
+
+// Instantiate the Unit Under Test (UUT)
+sixbit_adder uut (
+  .x(test_x),
+  .y(test_y),
+  .c_in(test_c_in),
+  .c_out(c_out),
+  .overflow(overflow),
+  .sum(sum)
+);
+
+initial begin
+// test vector 1
+test_x = 6'b000000;
+test_y = 6'b000000;
+test_c_in = 1'b0;
+#200
+
+// test vector 2
+test_x = 6'b000000;
+test_y = 6'b000000;
+test_c_in = 1'b1;
+#200
+
+// test vector 3
+test_x = 6'b000011; //3
+test_y = 6'b000111; //7
+test_c_in = 1'b0;
+#200
+
+// test vector 4
+test_x = 6'b000011; //3
+test_y = 6'b000111; //7
+test_c_in = 1'b1;
+#200
+
+// test vector 5
+test_x = 6'b011001; //25
+test_y = 6'b010101; //21
+test_c_in = 1'b0;
+#200
+
+// test vector 6
+test_x = 6'b011001; //25
+test_y = 6'b010101; //21
+test_c_in = 1'b1;
+#200
+
+// test vector 7
+test_x = 6'b100010; //-30
+test_y = 6'b101111; //-17
+test_c_in = 1'b0;
+#200
+
+// test vector 8
+test_x = 6'b100010; //-30
+test_y = 6'b101111; //-17
+test_c_in = 1'b1;
+#200
+
+// test vector 9
+test_x = 6'b101101; //-19
+test_y = 6'b110111; //-9
+test_c_in = 1'b0;
+#200
+
+// test vector 10
+test_x = 6'b101101; //-19
+test_y = 6'b110111; //-9
+test_c_in = 1'b1;
+#200
+
+// test vector 11
+test_x = 6'b100001; //-31
+test_y = 6'b011000; //24
+test_c_in = 1'b0;
+#200
+
+// test vector 12
+test_x = 6'b100001; //-31
+test_y = 6'b011000; //24
+test_c_in = 1'b1;
+#200
+
+// test vector 13
+test_x = 6'b000101; //5
+test_y = 6'b111011; //-5
+test_c_in = 1'b0;
+#200
+
+// test vector 14
+test_x = 6'b000101; //5
+test_y = 6'b111011; //-5
+test_c_in = 1'b1;
+#200
+// Wait 100 ns for global reset to finish
+#100;
+end
+endmodule
