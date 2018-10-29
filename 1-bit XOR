@@ -1,0 +1,13 @@
+module xorbit(
+  a, b, x
+);
+
+//input wires
+input wire a, b;
+
+//output wires
+output wire x;
+
+//bitwise xor
+assign x = a^b;
+endmodule
