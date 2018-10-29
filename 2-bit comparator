@@ -1,0 +1,15 @@
+module twobit_comparator
+(
+  input wire a0, a1, b0, b1,
+  output wire eq
+);
+
+// internal signal declaration
+wire e0, e1;
+// body
+// instantiate two 1-bit comparators
+onebit_comparator bit0 (.i0(a0), .i1(b0), .eq(e0));
+onebit_comparator bit1 (.i0(a1), .i1(b1), .eq(e1));
+// a and b are equal if individual bits are equal
+assign eq = e0 &amp; e1;
+endmodule
