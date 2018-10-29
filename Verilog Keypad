@@ -22,29 +22,29 @@ output reg [3:0] key_value;
 always @*
 begin
 if (row_a &amp; col_x)
-key_value = 4&#39;b0111; //7
+key_value = 4'b0111; //7
 if (row_a &amp; col_y)
-key_value = 4&#39;b1000; //8
+key_value = 4'b1000; //8
 if (row_a &amp; col_z)
-key_value = 4&#39;b1001; //9
+key_value = 4'b1001; //9
 if (row_b &amp; col_x)
-key_value = 4&#39;b0100; //4
+key_value = 4'b0100; //4
 if (row_b &amp; col_y)
-key_value = 4&#39;b0101; //5
+key_value = 4'b0101; //5
 if (row_b &amp; col_z)
-key_value = 4&#39;b0110; //6
+key_value = 4'b0110; //6
 if (row_c &amp; col_x)
-key_value = 4&#39;b0001; //1
+key_value = 4'b0001; //1
 if (row_c &amp; col_y)
-key_value = 4&#39;b0010; //2
+key_value = 4'b0010; //2
 if (row_c &amp; col_z)
-key_value = 4&#39;b0011; //3
+key_value = 4'b0011; //3
 if (row_d &amp; col_x)
-key_value = 4&#39;b0000; //0
+key_value = 4'b0000; //0
 if (row_d &amp; col_y)
-key_value = 4&#39;b1010; // 10 for #
+key_value = 4'b1010; // 10 for #
 if (row_d &amp; col_z)
-key_value = 4&#39;b1111; //15 for *
+key_value = 4'b1111; //15 for *
 
 end //end of always block
 
@@ -54,8 +54,8 @@ begin
 //adding up all the rows should = 1, adding up all the columns should = 1
 //if not then the key press is not valid
 //high when key press invalid
-Key_Not_Valid = ~(((row_a + row_b + row_c + row_d) == 3&#39;b001) &amp;&amp; ((col_x + col_y + col_z)
-== 3&#39;b001));
+Key_Not_Valid = ~(((row_a + row_b + row_c + row_d) == 3'b001) &amp;&amp; ((col_x + col_y + col_z)
+== 3'b001));
 end // end of second always block
 endmodule
 
@@ -94,65 +94,65 @@ initial begin
 //and two tests which were invalid
 
 //test vector 1 (7)
-a = 1&#39;b1;
-b = 1&#39;b0;
-c = 1&#39;b0;
-d = 1&#39;b0;
-x = 1&#39;b1;
-y = 1&#39;b0;
-z = 1&#39;b0;
+a = 1'b1;
+b = 1'b0;
+c = 1'b0;
+d = 1'b0;
+x = 1'b1;
+y = 1'b0;
+z = 1'b0;
 #200;
 
 //test vector 5 (3)
-a = 1&#39;b0;
-b = 1&#39;b0;
-c = 1&#39;b1;
-d = 1&#39;b0;
-x = 1&#39;b0;
-y = 1&#39;b0;
-z = 1&#39;b1;
+a = 1'b0;
+b = 1'b0;
+c = 1'b1;
+d = 1'b0;
+x = 1'b0;
+y = 1'b0;
+z = 1'b1;
 #200;
 
 //test vector 6 (Invalid)
 //no keys pressed
-a = 1&#39;b0;
-b = 1&#39;b0;
-c = 1&#39;b0;
-d = 1&#39;b0;
-x = 1&#39;b0;
-y = 1&#39;b0;
-z = 1&#39;b0;
+a = 1'b0;
+b = 1'b0;
+c = 1'b0;
+d = 1'b0;
+x = 1'b0;
+y = 1'b0;
+z = 1'b0;
 #200;
 
 //test vector 3 (0)
-a = 1&#39;b0;
-b = 1&#39;b0;
-c = 1&#39;b0;
-d = 1&#39;b1;
-x = 1&#39;b1;
-y = 1&#39;b0;
-z = 1&#39;b0;
+a = 1'b0;
+b = 1'b0;
+c = 1'b0;
+d = 1'b1;
+x = 1'b1;
+y = 1'b0;
+z = 1'b0;
 #200;
 
 //test vector 4 (Invalid)
 //multiple keys pressed
-a = 1&#39;b0;
-b = 1&#39;b1;
-c = 1&#39;b1;
-d = 1&#39;b0;
-x = 1&#39;b0;
-y = 1&#39;b0;
-z = 1&#39;b1;
+a = 1'b0;
+b = 1'b1;
+c = 1'b1;
+d = 1'b0;
+x = 1'b0;
+y = 1'b0;
+z = 1'b1;
 #200;
 
 //test vector 2 (5)
-a = 1&#39;b0;
-b = 1&#39;b1;
-c = 1&#39;b0;
-d = 1&#39;b0;
-x = 1&#39;b0;
-y = 1&#39;b1;
-z = 1&#39;b0;
+a = 1'b0;
+b = 1'b1;
+c = 1'b0;
+d = 1'b0;
+x = 1'b0;
+y = 1'b1;
+z = 1'b0;
 #200;
 
 // Wait 100 ns for global reset to finish
