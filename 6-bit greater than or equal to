@@ -1,0 +1,20 @@
+module six_bit_greater_than(
+  input wire[5:0] a, b,
+  output wire x
+);
+//internal wire
+wire w1, w2, w3, w4;
+
+//three 2bit greater thans
+twobit twobit_one (.a0(a[4]), .a1(a[5]), .b0(b[4]), .b1(b[5]), .eq(x1));
+twobit twobit_two (.a0(a[2]), .a1(a[3]), .b0(b[2]), .b1(b[3]), .eq(x2));
+twobit twobit_three (.a0(a[0]), .a1(a[1]), .b0(b[0]), .b1(b[1]), .eq(x3));
+twobit_comparator comparator1 (.a0(a[4]), .a1(a[5]), .b0(b[4]), .b1(b[5]), .eq(x4));
+twobit_comparator comparator2 (.a0(a[2]), .a1(a[3]), .b0(b[2]), .b1(b[3]), .eq(x5));
+twobit_comparator comparator3 (.a0(a[0]), .a1(a[1]), .b0(b[0]), .b1(b[1]), .eq(x6));
+assign w1 = x4 &amp; x5 &amp; x6;
+assign w2 = x4 &amp; x2;
+assign w3 = x5 &amp; x3;
+assign w4 = x1 | w2 | w3;
+assign x = w1 | w4;
+endmodule
