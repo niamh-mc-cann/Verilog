@@ -13,9 +13,9 @@ wire c_out;
 //allow the module to choose the function
 always@*
 begin
-if (select == 4&#39;b1011)
+if (select == 4'b1011)
   sub = 1'b1; //sub being high means that it will subtract
-if (select == 4&#39;b1100)
+if (select == 4'b1100)
   sub = 1'b0;
 end
 
