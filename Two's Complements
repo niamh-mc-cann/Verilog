@@ -1,0 +1,19 @@
+module twos_complement(a, b, x, select );
+input wire [5:0] a, b;
+input wire [3:0] select;
+output wire [5:0] x;
+
+//internal wire
+reg [5:0] in; //place holder
+//allow the module to choose between inputs
+always@*
+begin
+if (select == 4&#39;b0100)
+in = a;
+else if (select == 4&#39;b0101)
+in = b;
+
+end
+//to get the two&#39;s complement of a number flip the bits and add 1
+assign x = (~in + 6&#39;b000001);
+endmodule
